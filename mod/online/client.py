@@ -50,7 +50,9 @@ def get_processes():
         else:
             complex_process_tree.Insert('', name, name, values=[name])
             complex_process_tree.Insert(name, process.th32ProcessID, name_id, values=[process.th32ProcessID])
-    
+
+partys = []
+
 get_processes()
 
 layout_simple_choose_process = [
@@ -97,25 +99,28 @@ layout_server_connect = [
 
 async def event_server_connect(event: str, values: dict):
     if event.startswith('OK'):
-        # await sio.connect(values['server'])
-        # await sio.emit('get parties')
+        await sio.connect("http://"+values['server'])
+        await sio.emit('get parties')
         switch_layout(3)
     elif event.startswith('Cancel'):
         switch_layout(0)
 
 layout_choose_party = [
     [sg.Text('Choose a party')],
-    [sg.Table(values=[['A', 'B', 'C']],headings=["id", "player num", "day"], size=(20, 3), key='party', )],
+    [sg.Table(values=partys,headings=["id", "player num", "day"], size=(20, 3), key='party', ), sg.Button('Create party')],
     [sg.Input(key='party')],
     [sg.Button('OK'), sg.Button('Cancel')]
 ]
 
 async def event_choose_party(event: str, values: dict):
-    if event.startswith('OK') and len(values['party'])>0:
-        # await sio.emit('join party', values['party'])
+    if event.startswith('Create party'):
+        await sio.emit('create party')
+    elif event.startswith('OK') and len(values['party'])>0:
+        await sio.emit('join party', values['party'])
+        window['players'].update(value=partys[values['party']][2])
         switch_layout(4)
     elif event.startswith('Cancel'):
-        switch_layout(2)
+        window.close()
 
 layout_in_game = [
     [sg.Text('In game')],
@@ -174,6 +179,11 @@ async def my_message(data):
     print('message received with ', data)
     await sio.emit('my response', {'response': 'my response'})
 
+@sio.on("get party")
+async def get_party(data):
+    print(data)
+    partys = data
+
 @sio.event
 async def disconnect():
     print('disconnected from server')
@@ -186,7 +196,7 @@ async def main():
         if event != '__TIMEOUT__':
             print(event, values)
         await event_callback(event, values)
-    # await sio.wait()
+    await sio.wait()
 
 if __name__ == '__main__':
     asyncio.run(main())

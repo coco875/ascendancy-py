@@ -1,5 +1,13 @@
 from aiohttp import web
 import socketio
+import sys
+
+if __name__ == '__main__':
+    current_dir = sys.path[0]
+    back_to_root = "\\".join(i for i in current_dir.split('\\')[:-2])
+    print(back_to_root)
+    sys.path.append(back_to_root+"\\tools")
+    sys.path.append(back_to_root)
 import session
 
 # create a Socket.IO server
@@ -39,4 +47,4 @@ async def disconnect(sid):
     print('disconnect ', sid)
 
 if __name__ == '__main__':
-    web.run_app(app)
+    web.run_app(app, host="localhost", port=5000)
