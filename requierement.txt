@@ -1,0 +1,6 @@
+pypng
+pysimplegui
+Pymem
+pythonnet
+python-socketio
+aiohttp
