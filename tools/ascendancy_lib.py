@@ -9,6 +9,8 @@ clr.AddReference("ii.AscendancyLib")
 import ii.AscendancyLib as asc
 import System
 
+asc: class_ascendancy.IIAscendancyLib
+
 save_reader = asc.Reader.SavReader()
 save_writer = asc.Writer.SavWriter()
 

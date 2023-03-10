@@ -12,6 +12,9 @@ if __name__ == '__main__':
     sys.path.append(back_to_root+"\\tools")
     sys.path.append(back_to_root)
 from tools import ram_access
+from tools import ascendancy_lib
+
+game = ram_access.Game()
 
 sio = socketio.AsyncClient()
 
@@ -63,7 +66,8 @@ layout_simple_choose_process = [
 
 async def event_simple_choose_process(event: str, values: dict):
     if event.startswith('OK') and len(values['process'])>0:
-        ram_access.selected_app(values['process'][0])
+        game.selected_app(values['process'][0])
+        game.init_address()
         switch_layout(2)
     elif event.startswith('Cancel'):
         window.close()
@@ -81,7 +85,7 @@ layout_complex_choose_process = [
 
 async def event_complex_choose_process(event: str, values: dict):
     if event.startswith('OK') and len(values['process0'])>0:
-        ram_access.selected_app(values['process0'][0])
+        game.selected_app(values['process0'][0])
         switch_layout(2)
     elif event.startswith('Cancel'):
         window.close()
@@ -115,8 +119,12 @@ layout_choose_party = [
 async def event_choose_party(event: str, values: dict):
     if event.startswith('Create party'):
         await sio.emit('create party')
+        races = game.get_all_race()
+        for i in range(len(races)):
+            await sio.emit("set race", data=[ascendancy_lib.Struct_to_bytes(races[i]), i])
     elif event.startswith('OK') and len(values['party'])>0:
         await sio.emit('join party', values['party'])
+        await sio.emit("get all race")
         window['players'].update(value=partys[values['party']][2])
         switch_layout(4)
     elif event.startswith('Cancel'):

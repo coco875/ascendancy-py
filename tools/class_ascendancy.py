@@ -1477,3 +1477,59 @@ class SavFile:
     StarLaneCounts: list[StarLaneCount]
     Unknown7: list[int]
 
+"""
+public enum Colour : byte
+    {
+        Green,
+        Purple,
+        Yellow,
+        Pink,
+        Brown,
+        Blue,
+        Orange
+    }
+"""
+
+class Colour(Enum):
+    Green = 0
+    Purple = 1
+    Yellow = 2
+    Pink = 3
+    Brown = 4
+    Blue = 5
+    Orange = 6
+
+@dataclass
+class AscendancyLibEnum:
+    Colour: Colour
+    Gizmo: Gizmo
+    ManagementType: ManagementType
+    PlanetSize: PlanetSize
+    PlanetType: PlanetType
+    PlanItem: PlanItem
+    Race: Race
+    RelationshipState: RelationshipState
+    ResearchableItem: ResearchableItem
+    SquareType: SquareType
+    StarlaneType: StarlaneType
+    StarType: StarType
+    Structure: Structure
+    WinMechanism: WinMechanism
+
+@dataclass
+class AscendancyLibModel:
+    Enum: AscendancyLibEnum
+    Diplomacy: Diplomacy
+    Header: Header
+    Planet: Planet
+    PlanetStructure: PlanetStructure
+    ResearchItem: ResearchItem
+    SavFile: SavFile
+    Ship: Ship
+    StarLane: StarLane
+    StarLaneCount: StarLaneCount
+    StarSystem: StarSystem
+
+@dataclass
+class IIAscendancyLib:
+    Model: AscendancyLibModel
