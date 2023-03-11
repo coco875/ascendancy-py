@@ -9,39 +9,21 @@ class Game:
 
         self.adress = {}
 
-        self.paused_address = 0
-
-        self.planet_structures_address = 0
         self.size_struct_planet_structures = ascendancy.size_of_struct(ascendancy.asc.Model.PlanetStructure)
 
-        self.number_of_ships_address = 0
-
-        self.research_address = 0
         self.size_struct_research = ascendancy.size_of_struct(ascendancy.asc.Model.ResearchItem)
-        
-        self.days_address = 0
-        
-        self.race_number_address = 0
-        self.menu_address = 0
 
-        self.race_address = 0
-
-        self.planet_address = 0
         self.size_struct_planet = ascendancy.size_of_struct(ascendancy.asc.Model.Planet)
 
-        self.ship_address = 0
         self.size_struct_ship = ascendancy.size_of_struct(ascendancy.asc.Model.Ship)-4 # maybe the -4 is for the index
         
         self.systems_address = 0
         self.size_struct_systems = ascendancy.size_of_struct(ascendancy.asc.Model.StarSystem)
 
-        self.diplomacy_address = 0
         self.size_struct_diplomacy = ascendancy.size_of_struct(ascendancy.asc.Model.Diplomacy)
 
-        self.starlanes_address = 0
         self.size_struct_starlanes = ascendancy.size_of_struct(ascendancy.asc.Model.StarLane)
 
-        self.current_research_items_address = 0
         self.size_struct_current_research_items = 2 # short
 
     def get_paused_address(self) -> int:
